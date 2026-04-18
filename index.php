@@ -1,4 +1,5 @@
 <?php
+$base_path = "";
 include('database.php');
 include('includes/header.php');
 
@@ -6,6 +7,7 @@ include('includes/header.php');
 $sql = "SELECT properties.*, users.name AS owner_name 
         FROM properties 
         JOIN users ON properties.owner_id = users.id 
+        WHERE properties.status = 'available'
         ORDER BY properties.id DESC";
 
 $result = $conn->query($sql);

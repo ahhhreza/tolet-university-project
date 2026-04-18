@@ -45,3 +45,13 @@ CREATE TABLE requests (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+-- Admin Seeder
+INSERT INTO users (name, phone, email, password, role)
+VALUES (
+    'Super Admin',
+    '01521217918',
+    'admin@tolet.com',
+    '$2y$10$wH5z9lQ8u3Y0vQq7vQq7vOeQZkQmQmQmQmQmQmQmQmQmQmQmQm',
+    'admin'
+);
+

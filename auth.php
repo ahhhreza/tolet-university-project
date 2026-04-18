@@ -1,5 +1,6 @@
 <?php
 session_start();
+$base_path = "";
 include('database.php');
 
 $message = "";
