@@ -8,6 +8,7 @@ if (!isset($base_path)) {
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>To-Let System</title>
     <link rel="stylesheet" href="<?php echo $base_path; ?>style.css">
 </head>
@@ -22,6 +23,7 @@ if (!isset($base_path)) {
         <a href="<?php echo $base_path; ?>index.php">Home</a>
 
         <?php if (isset($_SESSION['user_id'])): ?>
+            <a href="<?php echo $base_path; ?>profile.php">Profile</a>
             
             <?php if ($_SESSION['role'] == 'owner'): ?>
                 <a href="<?php echo $base_path; ?>owner/add_property.php">Add Property</a>

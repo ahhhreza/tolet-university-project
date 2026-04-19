@@ -4,8 +4,8 @@ $base_path = "";
 include('database.php');
 
 $message = "";
+$message_class = "message";
 
-// REGISTER
 if (isset($_POST['register'])) {
     $name = $_POST['name'];
     $phone = $_POST['phone'];
@@ -13,17 +13,24 @@ if (isset($_POST['register'])) {
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
     $role = $_POST['role'];
 
-    $sql = "INSERT INTO users (name, phone, email, password, role)
-            VALUES ('$name', '$phone', '$email', '$password', '$role')";
+    $check_sql = "SELECT id FROM users WHERE phone = '$phone'";
+    $check_result = $conn->query($check_sql);
 
-    if ($conn->query($sql)) {
-        $message = "Registration successful!";
+    if ($check_result && $check_result->num_rows > 0) {
+        $message = "This phone number is already registered.";
     } else {
-        $message = "Error: " . $conn->error;
+        $sql = "INSERT INTO users (name, phone, email, password, role)
+                VALUES ('$name', '$phone', '$email', '$password', '$role')";
+
+        if ($conn->query($sql)) {
+            $message = "Registration successful!";
+            $message_class = "success-message";
+        } else {
+            $message = "Error: " . $conn->error;
+        }
     }
 }
 
-// LOGIN
 if (isset($_POST['login'])) {
     $phone = $_POST['phone'];
     $password = $_POST['password'];
@@ -39,11 +46,13 @@ if (isset($_POST['login'])) {
             $_SESSION['role'] = $user['role'];
             $_SESSION['name'] = $user['name'];
 
-            header("Location: index.php"); // redirect after login
+            header("Location: index.php");
             exit();
         } else {
             $message = "Invalid password!";
         }
+    } elseif ($result->num_rows > 1) {
+        $message = "Multiple accounts found with this phone number. Please update the data.";
     } else {
         $message = "User not found!";
     }
@@ -53,6 +62,7 @@ if (isset($_POST['login'])) {
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>To-Let Auth</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -61,11 +71,9 @@ if (isset($_POST['login'])) {
 <div class="container">
 
     <h2>To-Let System</h2>
-    <p class="message"><?php echo $message; ?></p>
+    <p class="<?php echo $message_class; ?>"><?php echo $message; ?></p>
 
     <div class="forms">
-
-        <!-- REGISTER -->
         <div class="form-box">
             <h3>Register</h3>
             <form method="POST">
@@ -83,7 +91,6 @@ if (isset($_POST['login'])) {
             </form>
         </div>
 
-        <!-- LOGIN -->
         <div class="form-box">
             <h3>Login</h3>
             <form method="POST">
@@ -93,7 +100,6 @@ if (isset($_POST['login'])) {
                 <button type="submit" name="login">Login</button>
             </form>
         </div>
-
     </div>
 
 </div>

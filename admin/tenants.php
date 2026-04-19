@@ -17,7 +17,7 @@ if ($page < 1) {
 
 $offset = ($page - 1) * $per_page;
 
-$count_sql = "SELECT COUNT(*) AS total FROM properties";
+$count_sql = "SELECT COUNT(*) AS total FROM users WHERE role = 'tenant'";
 $count_result = $conn->query($count_sql);
 $total_rows = $count_result->fetch_assoc()['total'];
 $total_pages = ceil($total_rows / $per_page);
@@ -26,10 +26,9 @@ if ($total_pages < 1) {
     $total_pages = 1;
 }
 
-$sql = "SELECT properties.*, users.name AS owner_name
-        FROM properties
-        JOIN users ON properties.owner_id = users.id
-        ORDER BY properties.id DESC
+$sql = "SELECT * FROM users
+        WHERE role = 'tenant'
+        ORDER BY id DESC
         LIMIT $offset, $per_page";
 
 $result = $conn->query($sql);
@@ -41,30 +40,22 @@ $result = $conn->query($sql);
     <a class="btn" href="tenants.php">Tenants</a>
 </div>
 
-<h2>Admin Dashboard - Property Listings</h2>
+<h2>All Tenants</h2>
 
 <div class="property-list">
 
 <?php if ($result->num_rows > 0): ?>
     <?php while($row = $result->fetch_assoc()): ?>
         <div class="property-card">
-            <h3><?php echo $row['title']; ?></h3>
-            <p><strong>Owner:</strong> <?php echo $row['owner_name']; ?></p>
-            <p><strong>Location:</strong> <?php echo $row['location']; ?></p>
-            <p><strong>Approval:</strong> <?php echo ucfirst($row['approval_status']); ?></p>
-            <p><strong>Availability:</strong> <?php echo ($row['status'] == 'available') ? 'Available' : 'Rented'; ?></p>
-
-            <a class="btn" href="update_status.php?id=<?php echo $row['id']; ?>&approval_status=approved">
-                Approve
-            </a>
-
-            <a class="btn" style="background:red;" href="update_status.php?id=<?php echo $row['id']; ?>&approval_status=rejected">
-                Reject
-            </a>
+            <h3><?php echo $row['name']; ?></h3>
+            <p><strong>Phone:</strong> <?php echo $row['phone']; ?></p>
+            <p><strong>Email:</strong> <?php echo $row['email'] ? $row['email'] : 'N/A'; ?></p>
+            <p><strong>Role:</strong> <?php echo ucfirst($row['role']); ?></p>
+            <p><strong>Joined:</strong> <?php echo $row['created_at']; ?></p>
         </div>
     <?php endwhile; ?>
 <?php else: ?>
-    <p>No properties found.</p>
+    <p>No tenants found.</p>
 <?php endif; ?>
 
 </div>
@@ -72,13 +63,13 @@ $result = $conn->query($sql);
 <?php if ($total_pages > 1): ?>
     <div class="pagination">
         <?php if ($page > 1): ?>
-            <a class="btn" href="dashboard.php?page=<?php echo $page - 1; ?>">Previous</a>
+            <a class="btn" href="tenants.php?page=<?php echo $page - 1; ?>">Previous</a>
         <?php endif; ?>
 
         <span class="page-info">Page <?php echo $page; ?> of <?php echo $total_pages; ?></span>
 
         <?php if ($page < $total_pages): ?>
-            <a class="btn" href="dashboard.php?page=<?php echo $page + 1; ?>">Next</a>
+            <a class="btn" href="tenants.php?page=<?php echo $page + 1; ?>">Next</a>
         <?php endif; ?>
     </div>
 <?php endif; ?>
