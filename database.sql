@@ -1,5 +1,5 @@
-CREATE DATABASE tolet_db;
-USE tolet_db;
+CREATE DATABASE tolet_db2;
+USE tolet_db2;
 
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -46,12 +46,12 @@ CREATE TABLE requests (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Admin Seeder
-INSERT INTO users (name, phone, email, password, role)
-VALUES (
-    'Super Admin',
-    '01521217918',
-    'admin@tolet.com',
-    '$2y$10$wH5z9lQ8u3Y0vQq7vQq7vOeQZkQmQmQmQmQmQmQmQmQmQmQmQm',
-    'admin'
-);
+-- -- Admin Seeder
+-- INSERT INTO users (name, phone, email, password, role)
+-- VALUES (
+--     'Super Admin',
+--     '01521217918',
+--     'admin@tolet.com',
+--     '$2y$10$wH5z9lQ8u3Y0vQq7vQq7vOeQZkQmQmQmQmQmQmQmQmQmQmQmQm',
+--     'admin'
+-- );

@@ -49,8 +49,8 @@ if ($is_logged_in && $_SESSION['role'] == 'tenant') {
 }
 ?>
 
-<div class="property-card" style="max-width:600px; margin:auto;">
-    <h2><?php echo $row['title']; ?></h2>
+<div class="container"><div class="row justify-content-center"><div class="col-lg-9"><div class="property-card">
+    <div class="d-flex justify-content-between align-items-start gap-3 mb-3"><div><div class="eyebrow">Property details</div><h2 class="page-title mb-0"><?php echo htmlspecialchars($row['title']); ?></h2></div><span class="badge text-bg-success"><?php echo htmlspecialchars($availability_label); ?></span></div>
 
     <?php if (isset($_GET['request']) && $_GET['request'] == 'success'): ?>
         <p class="success-message">Request sent successfully!</p>
@@ -68,13 +68,11 @@ if ($is_logged_in && $_SESSION['role'] == 'tenant') {
         </div>
     <?php endif; ?>
 
-    <p><strong>Location:</strong> <?php echo $row['location']; ?></p>
-    <p><strong>Rent:</strong> &#2547;<?php echo $row['rent']; ?></p>
-    <p><strong>Type:</strong> <?php echo $row['property_type']; ?></p>
-    <p><strong>Description:</strong> <?php echo $row['description']; ?></p>
-    <p><strong>Owner:</strong> <?php echo $row['owner_name']; ?></p>
+    <div class="row g-3 mb-3"><div class="col-sm-4"><div class="surface p-3"><small class="text-muted d-block">Monthly rent</small><strong class="fs-5">BDT <?php echo number_format((float) $row['rent']); ?></strong></div></div><div class="col-sm-4"><div class="surface p-3"><small class="text-muted d-block">Location</small><strong><?php echo htmlspecialchars($row['location']); ?></strong></div></div><div class="col-sm-4"><div class="surface p-3"><small class="text-muted d-block">Type</small><strong><?php echo htmlspecialchars($row['property_type']); ?></strong></div></div></div>
+    <p><strong>Description:</strong> <?php echo htmlspecialchars($row['description']); ?></p>
+    <p><strong>Owner:</strong> <?php echo htmlspecialchars($row['owner_name']); ?></p>
     <?php if ($is_logged_in): ?>
-        <p><strong>Phone:</strong> <?php echo $row['owner_phone']; ?></p>
+        <p><strong>Phone:</strong> <?php echo htmlspecialchars($row['owner_phone']); ?></p>
     <?php else: ?>
         <p><strong>Phone:</strong> Login to view owner's phone number</p>
     <?php endif; ?>
@@ -96,6 +94,6 @@ if ($is_logged_in && $_SESSION['role'] == 'tenant') {
             </form>
         <?php endif; ?>
     <?php endif; ?>
-</div>
+</div></div></div></div>
 
 <?php include('includes/footer.php'); ?>

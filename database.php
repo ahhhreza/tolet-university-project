@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $pass = "";
-$db   = "tolet_db";
+$db   = "tolet_db2";
 
 $conn = new mysqli($host, $user, $pass, $db);
 

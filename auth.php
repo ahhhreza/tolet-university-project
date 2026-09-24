@@ -59,50 +59,12 @@ if (isset($_POST['login'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>To-Let Auth</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-<div class="container">
-
-    <h2>To-Let System</h2>
-    <p class="<?php echo $message_class; ?>"><?php echo $message; ?></p>
-
-    <div class="forms">
-        <div class="form-box">
-            <h3>Register</h3>
-            <form method="POST">
-                <input type="text" name="name" placeholder="Full Name" required>
-                <input type="text" name="phone" placeholder="Phone Number" required>
-                <input type="email" name="email" placeholder="Email">
-                <input type="password" name="password" placeholder="Password" required>
-
-                <select name="role">
-                    <option value="tenant">Tenant</option>
-                    <option value="owner">House Owner</option>
-                </select>
-
-                <button type="submit" name="register">Register</button>
-            </form>
-        </div>
-
-        <div class="form-box">
-            <h3>Login</h3>
-            <form method="POST">
-                <input type="text" name="phone" placeholder="Phone Number" required>
-                <input type="password" name="password" placeholder="Password" required>
-
-                <button type="submit" name="login">Login</button>
-            </form>
-        </div>
-    </div>
-
-</div>
-
-</body>
-</html>
+<?php include('includes/header.php'); ?>
+<div class="auth-page"><div class="container"><div class="row g-0 auth-panel mx-auto">
+    <div class="col-lg-5 auth-copy"><span class="brand text-white"><span class="brand-mark">T</span> To-Let</span><h1 class="mt-4">Find your next place.</h1><p>Browse approved homes, list your property, and connect with people directly.</p><a href="index.php" class="btn btn-light btn-sm mt-2">Browse properties</a></div>
+    <div class="col-lg-7 auth-forms"><div class="row g-4">
+        <div class="col-md-6"><div class="eyebrow">New account</div><h2 class="mb-3">Register</h2><?php if ($message): ?><p class="<?php echo $message_class; ?>"><?php echo htmlspecialchars($message); ?></p><?php endif; ?><form method="POST"><label>Full name</label><input type="text" name="name" placeholder="Your name" required><label>Phone number</label><input type="text" name="phone" placeholder="01XXXXXXXXX" required><label>Email</label><input type="email" name="email" placeholder="Optional"><label>Password</label><input type="password" name="password" required><label>Account type</label><select name="role"><option value="tenant">Tenant</option><option value="owner">Property owner</option></select><button type="submit" name="register" class="w-100 mt-3">Create account</button></form></div>
+        <div class="col-md-6 border-md-start"><div class="eyebrow">Existing account</div><h2 class="mb-3">Sign in</h2><form method="POST"><label>Phone number</label><input type="text" name="phone" placeholder="01XXXXXXXXX" required><label>Password</label><input type="password" name="password" required><button type="submit" name="login" class="w-100 mt-3">Sign in</button></form></div>
+    </div></div>
+</div></div></div>
+<?php include('includes/footer.php'); ?>

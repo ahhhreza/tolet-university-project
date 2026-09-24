@@ -54,30 +54,31 @@ if (isset($_POST['submit'])) {
 }
 ?>
 
-<h2>Add Property</h2>
+<div class="container"><div class="page-intro"><div class="eyebrow">Owner workspace</div><h1 class="page-title">Add a property</h1><p class="page-subtitle">Share the details of your space. New listings go to an administrator for approval.</p></div>
 
 <p class="<?php echo $message_class; ?>"><?php echo $message; ?></p>
 
-<div class="form-box" style="max-width:500px; margin:auto;">
+<div class="form-box" style="max-width:680px;">
     <form method="POST" enctype="multipart/form-data">
-        <input type="text" name="title" placeholder="Property Title" required>
+        <label>Property title</label><input type="text" name="title" placeholder="e.g. Bright 2-bedroom apartment" required>
 
-        <textarea name="description" placeholder="Description" rows="4"></textarea>
+        <label>Description</label><textarea name="description" placeholder="Tell people what makes this space special" rows="4"></textarea>
 
-        <input type="number" name="rent" placeholder="Rent Amount" required>
+        <label>Monthly rent</label><input type="number" name="rent" placeholder="Rent amount" required>
 
-        <input type="text" name="location" placeholder="Location (e.g. Dhaka, Gazipur)" required>
+        <label>Location</label><input type="text" name="location" placeholder="e.g. Dhaka, Gazipur" required>
 
-        <select name="property_type">
+        <label>Property type</label><select name="property_type">
             <option value="Flat">Flat</option>
             <option value="Room">Room</option>
             <option value="Sublet">Sublet</option>
         </select>
 
-        <input type="file" name="image" accept="image/*">
+        <label>Cover image</label><input type="file" name="image" accept="image/*">
 
         <button type="submit" name="submit">Add Property</button>
     </form>
+</div>
 </div>
 
 <?php include('../includes/footer.php'); ?>

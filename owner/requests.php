@@ -20,7 +20,7 @@ $sql = "SELECT requests.*, properties.title, users.name AS tenant_name, users.ph
 $result = $conn->query($sql);
 ?>
 
-<h2>Incoming Requests</h2>
+<div class="container"><div class="page-intro"><div class="eyebrow">Owner workspace</div><h1 class="page-title">Incoming requests</h1><p class="page-subtitle">Review messages from people interested in your properties.</p></div>
 
 <div class="property-list">
 
@@ -39,6 +39,7 @@ $result = $conn->query($sql);
 
 <?php endwhile; ?>
 
+</div>
 </div>
 
 <?php include('../includes/footer.php'); ?>

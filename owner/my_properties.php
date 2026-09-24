@@ -14,17 +14,17 @@ $sql = "SELECT * FROM properties WHERE owner_id = '$owner_id' ORDER BY id DESC";
 $result = $conn->query($sql);
 ?>
 
-<h2>My Properties</h2>
+<div class="container"><div class="page-intro"><div class="eyebrow">Owner workspace</div><h1 class="page-title">My properties</h1><p class="page-subtitle">Keep track of your listings and their approval status.</p></div>
 
 <div class="property-list">
 
 <?php if ($result->num_rows > 0): ?>
     <?php while($row = $result->fetch_assoc()): ?>
         <div class="property-card">
-            <h3><?php echo $row['title']; ?></h3>
+            <div class="d-flex justify-content-between gap-2"><h3><?php echo htmlspecialchars($row['title']); ?></h3><span class="badge text-bg-light align-self-start"><?php echo htmlspecialchars(ucfirst($row['approval_status'])); ?></span></div>
 
             <p><strong>Location:</strong> <?php echo $row['location']; ?></p>
-            <p><strong>Rent:</strong> &#2547;<?php echo $row['rent']; ?></p>
+            <p><strong>Rent:</strong> BDT <?php echo number_format((float) $row['rent']); ?></p>
             <p><strong>Type:</strong> <?php echo $row['property_type']; ?></p>
             <p><strong>Approval:</strong> <?php echo ucfirst($row['approval_status']); ?></p>
             <p><strong>Availability:</strong> <?php echo ($row['status'] == 'available') ? 'Available' : 'Rented'; ?></p>
@@ -42,6 +42,7 @@ $result = $conn->query($sql);
     <p>No properties added yet.</p>
 <?php endif; ?>
 
+</div>
 </div>
 
 <?php include('../includes/footer.php'); ?>

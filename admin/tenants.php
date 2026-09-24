@@ -34,13 +34,11 @@ $sql = "SELECT * FROM users
 $result = $conn->query($sql);
 ?>
 
-<div class="admin-links">
+<div class="container"><div class="page-intro"><div class="eyebrow">Administration</div><h1 class="page-title">Tenants</h1><p class="page-subtitle">View people looking for their next home.</p></div><div class="admin-links">
     <a class="btn" href="dashboard.php">Properties</a>
     <a class="btn" href="owners.php">Owners</a>
     <a class="btn" href="tenants.php">Tenants</a>
 </div>
-
-<h2>All Tenants</h2>
 
 <div class="property-list">
 
@@ -63,15 +61,17 @@ $result = $conn->query($sql);
 <?php if ($total_pages > 1): ?>
     <div class="pagination">
         <?php if ($page > 1): ?>
-            <a class="btn" href="tenants.php?page=<?php echo $page - 1; ?>">Previous</a>
+            <a class="btn btn-outline-secondary btn-sm" href="tenants.php?page=<?php echo $page - 1; ?>">Previous</a>
         <?php endif; ?>
 
         <span class="page-info">Page <?php echo $page; ?> of <?php echo $total_pages; ?></span>
 
         <?php if ($page < $total_pages): ?>
-            <a class="btn" href="tenants.php?page=<?php echo $page + 1; ?>">Next</a>
+            <a class="btn btn-outline-secondary btn-sm" href="tenants.php?page=<?php echo $page + 1; ?>">Next</a>
         <?php endif; ?>
     </div>
 <?php endif; ?>
+
+</div>
 
 <?php include('../includes/footer.php'); ?>

@@ -35,13 +35,11 @@ $sql = "SELECT properties.*, users.name AS owner_name
 $result = $conn->query($sql);
 ?>
 
-<div class="admin-links">
+<div class="container"><div class="page-intro"><div class="eyebrow">Administration</div><h1 class="page-title">Property approvals</h1><p class="page-subtitle">Review every listing before it becomes visible to tenants.</p></div><div class="admin-links">
     <a class="btn" href="dashboard.php">Properties</a>
     <a class="btn" href="owners.php">Owners</a>
     <a class="btn" href="tenants.php">Tenants</a>
 </div>
-
-<h2>Admin Dashboard - Property Listings</h2>
 
 <div class="property-list">
 
@@ -54,11 +52,11 @@ $result = $conn->query($sql);
             <p><strong>Approval:</strong> <?php echo ucfirst($row['approval_status']); ?></p>
             <p><strong>Availability:</strong> <?php echo ($row['status'] == 'available') ? 'Available' : 'Rented'; ?></p>
 
-            <a class="btn" href="update_status.php?id=<?php echo $row['id']; ?>&approval_status=approved">
+            <a class="btn btn-success btn-sm mt-2" href="update_status.php?id=<?php echo $row['id']; ?>&approval_status=approved">
                 Approve
             </a>
 
-            <a class="btn" style="background:red;" href="update_status.php?id=<?php echo $row['id']; ?>&approval_status=rejected">
+            <a class="btn btn-outline-danger btn-sm mt-2" href="update_status.php?id=<?php echo $row['id']; ?>&approval_status=rejected">
                 Reject
             </a>
         </div>
@@ -72,15 +70,17 @@ $result = $conn->query($sql);
 <?php if ($total_pages > 1): ?>
     <div class="pagination">
         <?php if ($page > 1): ?>
-            <a class="btn" href="dashboard.php?page=<?php echo $page - 1; ?>">Previous</a>
+            <a class="btn btn-outline-secondary btn-sm" href="dashboard.php?page=<?php echo $page - 1; ?>">Previous</a>
         <?php endif; ?>
 
         <span class="page-info">Page <?php echo $page; ?> of <?php echo $total_pages; ?></span>
 
         <?php if ($page < $total_pages): ?>
-            <a class="btn" href="dashboard.php?page=<?php echo $page + 1; ?>">Next</a>
+            <a class="btn btn-outline-secondary btn-sm" href="dashboard.php?page=<?php echo $page + 1; ?>">Next</a>
         <?php endif; ?>
     </div>
 <?php endif; ?>
+
+</div>
 
 <?php include('../includes/footer.php'); ?>
