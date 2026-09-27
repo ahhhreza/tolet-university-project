@@ -1,0 +1,3 @@
+<?php $base_path = ""; include('includes/header.php'); ?>
+<div class="container content-page legal-page"><header class="content-hero"><span class="eyebrow">Legal</span><h1>Cookie policy</h1><p>Last updated: September 27, 2026</p></header><section class="legal-copy"><h2>What cookies are</h2><p>Cookies are small pieces of data stored by your browser. They help websites remember information between requests.</p><h2>How To-Let uses them</h2><p>To-Let uses session data to keep signed-in users authenticated while they use the platform.</p><h2>Managing cookies</h2><p>You can manage or remove cookies through your browser settings. Removing session cookies may sign you out of To-Let.</p></section></div>
+<?php include('includes/footer.php'); ?>
