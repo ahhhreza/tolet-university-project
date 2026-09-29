@@ -1,0 +1,151 @@
+{
+  "project": {
+    "name": "To-Let",
+    "summary": "A university PHP/MySQL rental-listing platform for tenants, property owners, and administrators.",
+    "status": "University project and prototype. Existing functionality should be preserved unless a requested change explicitly modifies it.",
+    "currency": "BDT",
+    "timezone": "Asia/Dhaka"
+  },
+  "technology": {
+    "backend": "Procedural PHP using MySQLi",
+    "database": "MySQL or MariaDB",
+    "frontend": "Server-rendered PHP/HTML, Bootstrap 5.3.3 CDN, Bootstrap Icons CDN, custom CSS in style.css",
+    "fonts": ["DM Sans", "Playfair Display"],
+    "uploads_directory": "uploads/",
+    "development_server": "php -S localhost:8000"
+  },
+  "configuration": {
+    "database_connection_file": "database.php",
+    "configured_database_name": "tolet_db2",
+    "schema_file": "database.sql",
+    "sample_data_dump": "tolet_db2.sql",
+    "note": "Do not include or expose database credentials in user-facing output. database.php also adds approval_status to older local schemas when needed."
+  },
+  "roles": {
+    "tenant": {
+      "can": ["register", "log in", "browse approved available properties", "view property details", "view owner phone after login", "send one request per property", "update profile"]
+    },
+    "owner": {
+      "can": ["register", "log in", "add a property", "upload one optional property image", "view own properties", "delete own properties", "view incoming tenant requests", "update profile"]
+    },
+    "admin": {
+      "can": ["log in", "view all properties", "approve properties", "reject properties", "view owner list", "view tenant list", "update profile"]
+    }
+  },
+  "database_model": {
+    "users": {
+      "purpose": "Tenant, owner, and admin accounts",
+      "key_fields": ["id", "name", "phone", "email", "password", "role", "created_at"],
+      "roles": ["tenant", "owner", "admin"]
+    },
+    "properties": {
+      "purpose": "Rental listings",
+      "key_fields": ["id", "owner_id", "title", "description", "rent", "location", "property_type", "status", "approval_status", "created_at"],
+      "status_values": ["available", "rented"],
+      "approval_status_values": ["pending", "approved", "rejected"]
+    },
+    "property_images": {
+      "purpose": "Image filename records for a property",
+      "key_fields": ["id", "property_id", "image_path"]
+    },
+    "requests": {
+      "purpose": "Tenant messages or rental requests for a property",
+      "key_fields": ["id", "property_id", "user_id", "message", "status", "created_at"],
+      "status_values": ["pending", "approved", "rejected"]
+    },
+    "relationships": [
+      "users.id -> properties.owner_id",
+      "properties.id -> property_images.property_id",
+      "properties.id -> requests.property_id",
+      "users.id -> requests.user_id"
+    ]
+  },
+  "application_flow": {
+    "public_listing": "index.php shows only properties where status is available and approval_status is approved.",
+    "registration_login": "auth.php handles both registration and login. Login identifies users by phone number and stores user_id, role, and name in the session.",
+    "owner_listing_flow": "Owner submits owner/add_property.php. The listing is inserted as available and pending. An optional uploaded image is saved under uploads/ and recorded in property_images.",
+    "admin_approval_flow": "Admin dashboard lists properties. admin/update_status.php changes approval_status to approved or rejected.",
+    "tenant_request_flow": "A signed-in tenant can submit a request from property_details.php. user/send_request.php verifies the property is approved and available, then prevents duplicate requests by the same tenant.",
+    "owner_request_flow": "owner/requests.php shows incoming requests for properties owned by the signed-in owner. There is no UI to approve/reject a request yet."
+  },
+  "main_routes": {
+    "index.php": "Public property listing, filters, sorting, pagination, and BDT prices.",
+    "property_details.php": "Property detail page with 16:9 constrained gallery, owner contact panel, and tenant request panel.",
+    "auth.php": "Combined registration and login page.",
+    "profile.php": "Logged-in user profile update page.",
+    "owner/add_property.php": "Owner property creation and optional image upload.",
+    "owner/my_properties.php": "Owner's own listings.",
+    "owner/requests.php": "Owner's incoming tenant requests.",
+    "owner/delete_property.php": "Deletes a listing when it belongs to the signed-in owner.",
+    "user/send_request.php": "Processes a tenant request submission.",
+    "admin/dashboard.php": "Admin property listing with approve/reject controls.",
+    "admin/owners.php": "Admin owner list.",
+    "admin/tenants.php": "Admin tenant list.",
+    "admin/update_status.php": "Updates a property's approval state.",
+    "about-us.php": "Static About page.",
+    "our-team.php": "Static team page. Uses placeholder member photos, names, and designations.",
+    "contact-us.php": "Static contact page. Its form is visual only and has no backend submission handler.",
+    "faqs.php": "Static FAQ page.",
+    "privacy-policy.php": "Static legal page.",
+    "terms-of-service.php": "Static legal page.",
+    "cookie-policy.php": "Static legal page.",
+    "disclaimer.php": "Static legal page."
+  },
+  "shared_layout": {
+    "header": "includes/header.php starts the session, loads Bootstrap, Bootstrap Icons, fonts, and style.css, then renders the global navbar and opens main.",
+    "footer": "includes/footer.php closes main and renders the global dark footer with links to all static pages.",
+    "container_rule": "Header, footer, and main containers share width: calc(100% - 80px), max-width: 1760px. Mobile uses calc(100% - 32px).",
+    "do_not_break": "Header must not close main or body. Footer owns the closing main/body/html tags."
+  },
+  "listing_page": {
+    "file": "index.php",
+    "filters": ["location", "minimum rent", "maximum rent", "property type"],
+    "sort_options": ["newest", "rent low to high", "rent high to low"],
+    "pagination": "12 matching cards maximum per page. Active filters and sort query parameters are retained across pagination links.",
+    "cards": "Four columns on wide desktop, two columns at narrower desktop/tablet, one column on mobile. Cards show available/type badges, image, title, location, owner, BDT monthly rent, and View details.",
+    "images": "Uses most recent property_images image_path. Missing images show a house placeholder."
+  },
+  "property_detail_page": {
+    "file": "property_details.php",
+    "layout": "Title and price header, horizontally scrollable constrained gallery, main content and sticky owner/request sidebar on desktop.",
+    "gallery": "Property images use a 16:9 ratio, object-fit cover, and desktop tiles constrained between 520px and 760px wide. Do not expand them into a full-width banner without user approval.",
+    "visibility": "Approved listings are public. Pending/rejected listings can be viewed only by their owner or an admin.",
+    "price_display": "Use `BDT ` followed by a formatted number, for example `BDT 15,200`."
+  },
+  "design_system": {
+    "style_file": "style.css",
+    "visual_direction": "Minimal, professional rental marketplace using off-white canvas, white cards, dark forest-green footer, green actions, dark serif display headings, and DM Sans UI text.",
+    "core_colors": {
+      "ink": "#17231f",
+      "canvas": "#f6f8f7",
+      "green": "#16745a",
+      "green_dark": "#10523f",
+      "line": "#e1e8e3"
+    },
+    "component_rules": [
+      "Use Bootstrap Icons instead of hand-drawn SVG icons.",
+      "Keep radii restrained, generally 7px to 14px.",
+      "Avoid oversized hero/header gaps. Content begins close below the 60px navigation bar.",
+      "Use BDT, not the Taka symbol, for displayed rental prices.",
+      "Cards and image frames need stable dimensions so image sizes cannot move layout.",
+      "Team member images are square (1:1) because supplied member photos are 1254x1254. Team images should use object-fit cover."
+    ]
+  },
+  "current_limitations_and_risks": [
+    "SQL is built by interpolating request values in several legacy files. Use prepared statements for any security hardening work.",
+    "Some legacy HTML output is not consistently escaped. New user-facing output should use htmlspecialchars.",
+    "There is no CSRF protection on forms or state-changing GET endpoints.",
+    "Owner deletion and admin approval currently use GET requests. Do not change this without coordinating the related UI and backend flow.",
+    "The owner request screen is read-only; request status management is not implemented in the UI.",
+    "The contact form is not connected to a backend handler or email service.",
+    "No automated test suite exists. Use php -l for syntax validation and manually check routes after UI changes.",
+    "The project may contain user-owned, uncommitted database and upload changes. Do not revert or delete them."
+  ],
+  "safe_change_guidance": [
+    "Preserve session role checks and existing form action URLs unless the task explicitly changes behavior.",
+    "Preserve database table and field names unless a migration is included.",
+    "Use apply_patch for code changes.",
+    "Run php -l on changed PHP files after edits.",
+    "When changing shared layout, verify index.php, auth.php, property_details.php, owner pages, admin pages, and static pages because header/footer are global."
+  ]
+}
